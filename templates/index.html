@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student Task Manager</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <p class="eyebrow">STUDENT PRODUCTIVITY</p>
+      <h1>Student Task Manager</h1>
+      <p class="subtitle">Plan your study tasks, keep track of deadlines, and celebrate your progress.</p>
+    </header>
+
+    <section class="stats" aria-label="Task summary">
+      <div class="stat"><span class="stat-number">{{ total }}</span><span class="stat-label">Total tasks</span></div>
+      <div class="stat"><span class="stat-number">{{ completed }}</span><span class="stat-label">Completed</span></div>
+      <div class="stat"><span class="stat-number">{{ total - completed }}</span><span class="stat-label">Pending</span></div>
+    </section>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="notice {{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <section class="panel">
+      <h2>Add a new task</h2>
+      <form action="{{ url_for('add_task') }}" method="post" class="task-form">
+        <label>Task title <input name="title" maxlength="120" placeholder="e.g. Prepare for DBMS exam" required></label>
+        <label>Description <textarea name="description" rows="2" placeholder="Add a few details (optional)"></textarea></label>
+        <div class="form-row">
+          <label>Due date <input type="date" name="due_date"></label>
+          <label>Priority
+            <select name="priority">
+              <option>Low</option><option selected>Medium</option><option>High</option>
+            </select>
+          </label>
+        </div>
+        <button type="submit" class="primary">+ Add task</button>
+      </form>
+    </section>
+
+    <section class="task-section">
+      <div class="task-heading">
+        <h2>Your tasks</h2>
+        <nav class="filters" aria-label="Filter tasks">
+          <a class="{{ 'active' if status == 'all' else '' }}" href="{{ url_for('index', status='all') }}">All</a>
+          <a class="{{ 'active' if status == 'pending' else '' }}" href="{{ url_for('index', status='pending') }}">Pending</a>
+          <a class="{{ 'active' if status == 'completed' else '' }}" href="{{ url_for('index', status='completed') }}">Completed</a>
+        </nav>
+      </div>
+
+      {% if tasks %}
+        <div class="task-list">
+          {% for task in tasks %}
+            <article class="task-card {{ 'is-complete' if task.completed else '' }}">
+              <div class="task-content">
+                <h3>{{ task.title }}</h3>
+                {% if task.description %}<p>{{ task.description }}</p>{% endif %}
+                <div class="meta">
+                  <span class="priority priority-{{ task.priority|lower }}">{{ task.priority }} priority</span>
+                  {% if task.due_date %}<span>Due: {{ task.due_date }}</span>{% endif %}
+                </div>
+              </div>
+              <div class="task-actions">
+                <form action="{{ url_for('toggle_task', task_id=task.id) }}" method="post">
+                  <button class="secondary" type="submit">{{ 'Mark pending' if task.completed else 'Complete' }}</button>
+                </form>
+                <form action="{{ url_for('delete_task', task_id=task.id) }}" method="post" onsubmit="return confirm('Delete this task?')">
+                  <button class="danger" type="submit">Delete</button>
+                </form>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="empty-state"><h3>No tasks found</h3><p>Add a task above to get started.</p></div>
+      {% endif %}
+    </section>
+    <footer>Student Task Management System · Internship Project</footer>
+  </main>
+</body>
+</html>
