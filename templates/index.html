@@ -1,88 +1,157 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Student Task Manager</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Organize study tasks, priorities, and deadlines.">
+    <title>{{ app_name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <main class="container">
-    <header class="hero">
-      <p class="eyebrow">STUDENT PRODUCTIVITY</p>
-      <h1>Student Task Manager</h1>
-      <p class="subtitle">Plan your study tasks, keep track of deadlines, and celebrate your progress.</p>
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-icon">ST</div>
+            <div>
+                <span class="brand-name">StudyTrack</span>
+                <span class="brand-subtitle">Student Task Manager</span>
+            </div>
+        </div>
+        <div class="topbar-label">YUVA INTERN · WEEK 2 PROJECT</div>
     </header>
 
-    <section class="stats" aria-label="Task summary">
-      <div class="stat"><span class="stat-number">{{ total }}</span><span class="stat-label">Total tasks</span></div>
-      <div class="stat"><span class="stat-number">{{ completed }}</span><span class="stat-label">Completed</span></div>
-      <div class="stat"><span class="stat-number">{{ total - completed }}</span><span class="stat-label">Pending</span></div>
-    </section>
+    <main class="container">
+        <section class="welcome">
+            <div>
+                <p class="eyebrow">YOUR STUDY WORKSPACE</p>
+                <h1>Plan your work.<br><span>Own your progress.</span></h1>
+                <p class="welcome-copy">Keep your assignments, deadlines, and study goals organized in one place.</p>
+            </div>
+            <div class="welcome-badge" aria-hidden="true">
+                <div class="badge-check">✓</div>
+                <strong>One task at a time</strong>
+                <span>Small steps. Real progress.</span>
+            </div>
+        </section>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class="notice {{ category }}">{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flash-stack" aria-live="polite">
+              {% for category, message in messages %}
+                <div class="flash {{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
 
-    <section class="panel">
-      <h2>Add a new task</h2>
-      <form action="{{ url_for('add_task') }}" method="post" class="task-form">
-        <label>Task title <input name="title" maxlength="120" placeholder="e.g. Prepare for DBMS exam" required></label>
-        <label>Description <textarea name="description" rows="2" placeholder="Add a few details (optional)"></textarea></label>
-        <div class="form-row">
-          <label>Due date <input type="date" name="due_date"></label>
-          <label>Priority
-            <select name="priority">
-              <option>Low</option><option selected>Medium</option><option>High</option>
-            </select>
-          </label>
-        </div>
-        <button type="submit" class="primary">+ Add task</button>
-      </form>
-    </section>
-
-    <section class="task-section">
-      <div class="task-heading">
-        <h2>Your tasks</h2>
-        <nav class="filters" aria-label="Filter tasks">
-          <a class="{{ 'active' if status == 'all' else '' }}" href="{{ url_for('index', status='all') }}">All</a>
-          <a class="{{ 'active' if status == 'pending' else '' }}" href="{{ url_for('index', status='pending') }}">Pending</a>
-          <a class="{{ 'active' if status == 'completed' else '' }}" href="{{ url_for('index', status='completed') }}">Completed</a>
-        </nav>
-      </div>
-
-      {% if tasks %}
-        <div class="task-list">
-          {% for task in tasks %}
-            <article class="task-card {{ 'is-complete' if task.completed else '' }}">
-              <div class="task-content">
-                <h3>{{ task.title }}</h3>
-                {% if task.description %}<p>{{ task.description }}</p>{% endif %}
-                <div class="meta">
-                  <span class="priority priority-{{ task.priority|lower }}">{{ task.priority }} priority</span>
-                  {% if task.due_date %}<span>Due: {{ task.due_date }}</span>{% endif %}
-                </div>
-              </div>
-              <div class="task-actions">
-                <form action="{{ url_for('toggle_task', task_id=task.id) }}" method="post">
-                  <button class="secondary" type="submit">{{ 'Mark pending' if task.completed else 'Complete' }}</button>
-                </form>
-                <form action="{{ url_for('delete_task', task_id=task.id) }}" method="post" onsubmit="return confirm('Delete this task?')">
-                  <button class="danger" type="submit">Delete</button>
-                </form>
-              </div>
+        <section class="stats" aria-label="Task summary">
+            <article class="stat-card">
+                <div class="stat-icon purple">▤</div>
+                <div><p>Total tasks</p><strong>{{ total }}</strong></div>
             </article>
-          {% endfor %}
+            <article class="stat-card">
+                <div class="stat-icon orange">◷</div>
+                <div><p>Pending</p><strong>{{ pending }}</strong></div>
+            </article>
+            <article class="stat-card">
+                <div class="stat-icon green">✓</div>
+                <div><p>Completed</p><strong>{{ completed }}</strong></div>
+            </article>
+        </section>
+
+        <div class="content-grid">
+            <section class="panel add-panel">
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">GET STARTED</p>
+                        <h2>Add a new task</h2>
+                    </div>
+                    <span class="heading-symbol">＋</span>
+                </div>
+                <form action="{{ url_for('add_task') }}" method="post" class="task-form">
+                    <label for="title">Task title <span class="required">*</span></label>
+                    <input id="title" name="title" type="text" maxlength="120" placeholder="e.g. Complete Python assignment" required>
+
+                    <label for="description">Description <span class="optional">(optional)</span></label>
+                    <textarea id="description" name="description" rows="3" placeholder="Add a few details about this task..."></textarea>
+
+                    <div class="form-row">
+                        <div>
+                            <label for="due_date">Due date</label>
+                            <input id="due_date" name="due_date" type="date" min="{{ today }}">
+                        </div>
+                        <div>
+                            <label for="priority">Priority</label>
+                            <select id="priority" name="priority">
+                                <option value="Low">Low</option>
+                                <option value="Medium" selected>Medium</option>
+                                <option value="High">High</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="button primary full-width" type="submit">＋ Add task</button>
+                    <p class="form-note"><span class="required">*</span> Required field</p>
+                </form>
+            </section>
+
+            <section class="panel tasks-panel">
+                <div class="panel-heading tasks-heading">
+                    <div>
+                        <p class="eyebrow">YOUR WORKLIST</p>
+                        <h2>My tasks <span class="count-pill">{{ tasks|length }}</span></h2>
+                    </div>
+                </div>
+
+                <nav class="filters" aria-label="Filter tasks">
+                    <a class="{{ 'active' if status == 'all' else '' }}" href="{{ url_for('index', status='all') }}">All <span>{{ total }}</span></a>
+                    <a class="{{ 'active' if status == 'pending' else '' }}" href="{{ url_for('index', status='pending') }}">Pending <span>{{ pending }}</span></a>
+                    <a class="{{ 'active' if status == 'completed' else '' }}" href="{{ url_for('index', status='completed') }}">Completed <span>{{ completed }}</span></a>
+                </nav>
+
+                {% if tasks %}
+                    <div class="task-list">
+                    {% for task in tasks %}
+                        <article class="task-item {{ 'is-complete' if task.completed else '' }}">
+                            <div class="task-main">
+                                <form action="{{ url_for('toggle_task', task_id=task.id) }}" method="post" class="toggle-form">
+                                    <button class="check-button {{ 'checked' if task.completed else '' }}" type="submit"
+                                            aria-label="{{ 'Mark pending' if task.completed else 'Mark complete' }}">
+                                        {% if task.completed %}✓{% endif %}
+                                    </button>
+                                </form>
+                                <div class="task-text">
+                                    <h3>{{ task.title }}</h3>
+                                    {% if task.description %}<p class="task-description">{{ task.description }}</p>{% endif %}
+                                    <div class="task-meta">
+                                        {% if task.due_date %}
+                                            <span class="due-date {{ 'overdue' if task.due_date < today and not task.completed else '' }}">▦ {{ task.due_date }}</span>
+                                        {% else %}
+                                            <span class="due-date muted">No due date</span>
+                                        {% endif %}
+                                        <span class="priority priority-{{ task.priority|lower }}">{{ task.priority }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <form action="{{ url_for('delete_task', task_id=task.id) }}" method="post" class="delete-form"
+                                  onsubmit="return confirm('Are you sure you want to delete this task?');">
+                                <button class="delete-button" type="submit" aria-label="Delete {{ task.title }}">×</button>
+                            </form>
+                        </article>
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <div class="empty-icon">✓</div>
+                        <h3>{% if status == 'pending' %}All caught up!{% elif status == 'completed' %}No completed tasks yet{% else %}Your task list is clear{% endif %}</h3>
+                        <p>{% if status == 'pending' %}There are no pending tasks in this view.{% elif status == 'completed' %}Complete a task and it will appear here.{% else %}Add your first task using the form to get started.{% endif %}</p>
+                    </div>
+                {% endif %}
+            </section>
         </div>
-      {% else %}
-        <div class="empty-state"><h3>No tasks found</h3><p>Add a task above to get started.</p></div>
-      {% endif %}
-    </section>
-    <footer>Student Task Management System · Internship Project</footer>
-  </main>
+
+        <footer class="page-footer">
+            <span>Built with Python · Flask · SQLite</span>
+            <span>Stay focused, keep moving forward.</span>
+        </footer>
+    </main>
 </body>
 </html>

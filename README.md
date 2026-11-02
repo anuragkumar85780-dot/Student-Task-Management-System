@@ -1,63 +1,51 @@
 # Student Task Management System
 
-A simple web application for students to organize study tasks, track deadlines, set priority, and mark work as complete. This project is built with Python, Flask, SQLite, HTML, and CSS.
+**Yuva Intern — Junior Software Developer Internship | Week 2 Project**
+
+A beginner-friendly task management web app built with Python, Flask, HTML, CSS, and SQLite.
 
 ## Features
-
-- Add tasks with a title, optional description, due date, and priority
-- View all tasks, only pending tasks, or completed tasks
-- Mark tasks as complete or pending
-- Delete tasks
-- Dashboard summary showing total, completed, and pending tasks
-- SQLite database stores tasks locally
-
-## Technology Stack
-
-- Python 3
-- Flask
-- SQLite
-- HTML5 and CSS3
+- Add tasks with title, optional description, due date, and priority
+- View All, Pending, and Completed tasks
+- Mark tasks complete or pending
+- Delete tasks with confirmation
+- Dashboard summary for total, pending, and completed tasks
+- Server-side validation and parameterized SQLite queries
+- Responsive layout for desktop and mobile screens
 
 ## Requirements
-
 - Python 3.10 or newer
 - pip
 
-## Run locally (Windows PowerShell)
-
-1. Extract or open this project folder in VS Code.
+## Run on Windows PowerShell
+1. Open this folder in VS Code.
 2. Create a virtual environment:
-
    ```powershell
    py -m venv venv
    ```
-
 3. Activate it:
-
    ```powershell
    .\venv\Scripts\Activate.ps1
    ```
-
+   If PowerShell blocks activation, use Command Prompt and run:
+   ```bat
+   venv\Scripts\activate.bat
+   ```
 4. Install dependencies:
-
    ```powershell
    python -m pip install -r requirements.txt
    ```
-
-5. Start the application:
-
+5. Start the app:
    ```powershell
    python app.py
    ```
+6. Open http://127.0.0.1:5000 in your browser.
 
-6. Open the local address shown in the terminal, normally http://127.0.0.1:5000.
-
-The SQLite database file `tasks.db` is created automatically when the app starts. It is intentionally excluded from version control because it contains local task data.
+The `tasks.db` SQLite file is created automatically when the app starts. It is excluded from Git because it contains local task data.
 
 ## Project Structure
-
 ```text
-Student_Task_Management_System/
+Student_Task_Management_System_Week2/
 ├── app.py
 ├── requirements.txt
 ├── README.md
@@ -69,29 +57,22 @@ Student_Task_Management_System/
 ```
 
 ## Basic Test Checklist
+- Add a task with a title
+- Try adding a blank title and confirm validation appears
+- Add a due date and priority
+- Mark a task complete, then mark it pending again
+- Switch between All, Pending, and Completed filters
+- Delete a task and confirm it disappears
+- Confirm dashboard counts update correctly
+- Restart the app and confirm tasks remain in SQLite
 
-- Add a task with a title.
-- Try adding a task without a title; the app should show a validation message.
-- Add a task with a due date and priority.
-- Mark a task as complete, then mark it pending again.
-- Switch between All, Pending, and Completed filters.
-- Delete a task and confirm it disappears.
+## Security Notes
+- SQL queries use placeholders for user-provided values.
+- State-changing actions use POST routes.
+- Jinja auto-escapes user-entered text in templates.
+- The fallback secret key is for local development only. Set `FLASK_SECRET_KEY` to a strong secret before any deployment.
+- Flask debug mode is enabled only for local development. Do not expose the development server publicly.
+- This demo does not include user accounts and should not store passwords or sensitive personal information.
 
-## Scope and Limitations
-
-This version is intended as a beginner internship project and runs locally. It does not include user accounts, cloud hosting, email reminders, or multi-user access. Do not use real passwords or sensitive personal information in this demo.
-
-## Future Improvements
-
-- User login and separate task lists
-- Search and sort tasks
-- Calendar view and reminders
-- Automated unit tests
-- Deployment to a hosting service
-
-## Author
-
-Prepared by Anurag Kumar  
-Role: Junior Software Developer Intern  
-Organization: Yuva Intern  
-Project: Student Task Management System
+## Scope
+This is a local, single-user internship project. Authentication, multi-user access, reminders, and cloud deployment are future enhancements.
