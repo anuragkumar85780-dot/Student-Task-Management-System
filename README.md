@@ -1,78 +1,87 @@
+**YuvaIntern — Junior Software Developer Internship
+
 # Student Task Management System
 
-**Yuva Intern — Junior Software Developer Internship | Week 2 Project**
-
-A beginner-friendly task management web app built with Python, Flask, HTML, CSS, and SQLite.
+## Project Overview
+Student Task Management System is a web-based application developed using Python, Flask, HTML, CSS, and SQLite. It helps students organize, manage, and track their daily academic tasks.
 
 ## Features
-- Add tasks with title, optional description, due date, and priority
-- View All, Pending, and Completed tasks
-- Mark tasks complete or pending
-- Delete tasks with confirmation
-- Dashboard summary for total, pending, and completed tasks
-- Server-side validation and parameterized SQLite queries
-- Responsive layout for desktop and mobile screens
+- Add new tasks with title and description.
+- Set task due dates.
+- Assign Low, Medium, and High priorities.
+- Mark tasks as completed or pending.
+- Filter tasks by All, Pending, and Completed status.
+- Delete tasks.
+- Store task data persistently using SQLite.
+- Display task statistics on the dashboard.
 
-## Requirements
-- Python 3.10 or newer
-- pip
-
-## Run on Windows PowerShell
-1. Open this folder in VS Code.
-2. Create a virtual environment:
-   ```powershell
-   py -m venv venv
-   ```
-3. Activate it:
-   ```powershell
-   .\venv\Scripts\Activate.ps1
-   ```
-   If PowerShell blocks activation, use Command Prompt and run:
-   ```bat
-   venv\Scripts\activate.bat
-   ```
-4. Install dependencies:
-   ```powershell
-   python -m pip install -r requirements.txt
-   ```
-5. Start the app:
-   ```powershell
-   python app.py
-   ```
-6. Open http://127.0.0.1:5000 in your browser.
-
-The `tasks.db` SQLite file is created automatically when the app starts. It is excluded from Git because it contains local task data.
+## Technology Stack
+- **Backend:** Python, Flask
+- **Frontend:** HTML, CSS
+- **Database:** SQLite
+- **Development Environment:** Visual Studio Code / Any Python-compatible editor
 
 ## Project Structure
+
 ```text
-Student_Task_Management_System_Week2/
+Student_Task_Management_System/
+│
 ├── app.py
+├── app_backup.py
+├── config.py
+├── database.py
+├── routes.py
+├── tasks.db
 ├── requirements.txt
 ├── README.md
-├── .gitignore
-├── templates/
-│   └── index.html
-└── static/
-    └── style.css
+│
+├── static/
+│   └── style.css
+│
+└── templates/
+    └── index.html
 ```
 
-## Basic Test Checklist
-- Add a task with a title
-- Try adding a blank title and confirm validation appears
-- Add a due date and priority
-- Mark a task complete, then mark it pending again
-- Switch between All, Pending, and Completed filters
-- Delete a task and confirm it disappears
-- Confirm dashboard counts update correctly
-- Restart the app and confirm tasks remain in SQLite
+## Module Description
+- **app.py:** Initializes the Flask application and registers routes.
+- **config.py:** Stores application configuration and database settings.
+- **database.py:** Handles SQLite database connections and table initialization.
+- **routes.py:** Manages task operations and application routes.
+- **templates/:** Contains HTML templates.
+- **static/:** Contains CSS styling.
+- **tasks.db:** Stores task records.
+- **requirements.txt:** Lists project dependencies.
 
-## Security Notes
-- SQL queries use placeholders for user-provided values.
-- State-changing actions use POST routes.
-- Jinja auto-escapes user-entered text in templates.
-- The fallback secret key is for local development only. Set `FLASK_SECRET_KEY` to a strong secret before any deployment.
-- Flask debug mode is enabled only for local development. Do not expose the development server publicly.
-- This demo does not include user accounts and should not store passwords or sensitive personal information.
+## Installation and Setup
 
-## Scope
-This is a local, single-user internship project. Authentication, multi-user access, reminders, and cloud deployment are future enhancements.
+1. Clone or download the project repository.
+2. Create and activate a Python virtual environment.
+3. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+4. Run the application:
+
+```bash
+python app.py
+```
+
+5. Open the browser and visit:
+
+```text
+http://127.0.0.1:5000
+```
+
+## Testing
+The following functionalities have been tested:
+- Application startup.
+- Adding new tasks.
+- Updating task completion status.
+- Filtering tasks.
+- Deleting tasks.
+- SQLite data persistence.
+
+## Conclusion
+The project uses a modular code structure to separate application configuration, database operations, and route handling. This improves readability, maintainability, and future extensibility.
