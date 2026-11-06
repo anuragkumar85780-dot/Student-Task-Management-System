@@ -85,3 +85,44 @@ The following functionalities have been tested:
 
 ## Conclusion
 The project uses a modular code structure to separate application configuration, database operations, and route handling. This improves readability, maintainability, and future extensibility.
+
+---
+
+## Coding Standards and Guidelines
+
+The Student Task Management System follows basic Python coding standards to keep the source code clean, readable, and maintainable.
+
+### 1. Naming Conventions
+- Use `snake_case` for variables and function names.
+- Use `UPPER_CASE` for constants.
+- Use `PascalCase` for class names.
+- Use meaningful and descriptive names.
+
+### 2. Code Formatting
+- Follow PEP 8 Python style guidelines.
+- Use four spaces for indentation.
+- Keep code properly organized and readable.
+- Separate functions with blank lines.
+
+### 3. Documentation and Comments
+- Add module-level docstrings to explain each Python file.
+- Add function docstrings to describe the purpose of functions.
+- Use meaningful comments for important logic.
+- Keep comments clear, short, and relevant.
+
+### 4. Error Handling and Security
+- Validate user input before saving data.
+- Use parameterized SQL queries to help prevent SQL injection.
+- Handle invalid dates and missing task information.
+- Keep configuration settings in `config.py`.
+
+### 5. Documentation Tools
+- **Pydoc:** Can generate documentation from Python modules and docstrings.
+- **Sphinx:** Can create structured project documentation in HTML and other formats.
+
+### 6. Code Maintenance
+- Keep database operations in `database.py`.
+- Keep application routes in `routes.py`.
+- Keep application settings in `config.py`.
+- Keep the main Flask application setup in `app.py`.
+- Test the application after code changes.
