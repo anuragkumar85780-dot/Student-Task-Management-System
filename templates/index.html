@@ -67,7 +67,7 @@
                     </div>
                     <span class="heading-symbol">＋</span>
                 </div>
-                <form action="{{ url_for('add_task') }}" method="post" class="task-form">
+                <form action="{{ url_for('main.add_task') }}" method="post" class="task-form">
                     <label for="title">Task title <span class="required">*</span></label>
                     <input id="title" name="title" type="text" maxlength="120" placeholder="e.g. Complete Python assignment" required>
 
@@ -102,9 +102,9 @@
                 </div>
 
                 <nav class="filters" aria-label="Filter tasks">
-                    <a class="{{ 'active' if status == 'all' else '' }}" href="{{ url_for('index', status='all') }}">All <span>{{ total }}</span></a>
-                    <a class="{{ 'active' if status == 'pending' else '' }}" href="{{ url_for('index', status='pending') }}">Pending <span>{{ pending }}</span></a>
-                    <a class="{{ 'active' if status == 'completed' else '' }}" href="{{ url_for('index', status='completed') }}">Completed <span>{{ completed }}</span></a>
+                    <a class="{{ 'active' if status == 'all' else '' }}" href="{{ url_for('main.index', status='all') }}">All <span>{{ total }}</span></a>
+                    <a class="{{ 'active' if status == 'pending' else '' }}" href="{{ url_for('main.index', status='pending') }}">Pending <span>{{ pending }}</span></a>
+                    <a class="{{ 'active' if status == 'completed' else '' }}" href="{{ url_for('main.index', status='completed') }}">Completed <span>{{ completed }}</span></a>
                 </nav>
 
                 {% if tasks %}
@@ -112,7 +112,7 @@
                     {% for task in tasks %}
                         <article class="task-item {{ 'is-complete' if task.completed else '' }}">
                             <div class="task-main">
-                                <form action="{{ url_for('toggle_task', task_id=task.id) }}" method="post" class="toggle-form">
+                                <form action="{{ url_for('main.toggle_task', task_id=task.id) }}" method="post" class="toggle-form">
                                     <button class="check-button {{ 'checked' if task.completed else '' }}" type="submit"
                                             aria-label="{{ 'Mark pending' if task.completed else 'Mark complete' }}">
                                         {% if task.completed %}✓{% endif %}
@@ -131,7 +131,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <form action="{{ url_for('delete_task', task_id=task.id) }}" method="post" class="delete-form"
+                            <form action="{{ url_for('main.delete_task', task_id=task.id) }}" method="post" class="delete-form"
                                   onsubmit="return confirm('Are you sure you want to delete this task?');">
                                 <button class="delete-button" type="submit" aria-label="Delete {{ task.title }}">×</button>
                             </form>
